@@ -7,7 +7,7 @@ from prophet import Prophet
 from prophet.plot import plot_plotly
 from plotly import graph_objs as go
 
-st.title("Stock Predictor")
+st.title("Stock Predictor by Harsh")
 
 # Custom "today" date input
 custom_today = st.date_input("Select a custom 'today' date:", date.today())
