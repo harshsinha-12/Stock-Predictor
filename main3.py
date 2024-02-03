@@ -12,7 +12,11 @@ def main():
 
     # User input for the ticker symbol
     tickerSymbol = st.text_input('Enter the Stock Ticker Symbol (e.g., RELIANCE.NS)', 'RELIANCE.NS')
-
+    st.text('Note: For Indian stocks, use the ".NS" extension. For US stocks, use the stock symbol only.')
+    st.text('For example, for Reliance Industries, use "RELIANCE.NS" and for Apple Inc., use "AAPL"')
+    st.text('For a list of stock symbols, visit https://in.finance.yahoo.com/ or https://finance.yahoo.com/')
+    st.text("All data is in Crores of Indian Rupees (INR) or US Dollars (USD) as applicable.")
+    st.write('You entered:', tickerSymbol)
     # Radio button for selecting annual or quarterly data
     data_frequency = st.radio("Select Data Frequency", ('Annual', 'Quarterly'))
 
