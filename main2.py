@@ -6,7 +6,7 @@ import plotly.graph_objs as go
 from datetime import date
 
 
-st.title("Future Price Predictor")
+st.title("Stock Price Predictor")
 
 # Input selection
 custom_today = st.date_input("Select a custom 'today' date:", date.today())
