@@ -4,6 +4,7 @@ from prophet import Prophet
 from prophet.plot import plot_plotly
 import plotly.graph_objs as go
 from datetime import date
+import pandas as pd
 
 st.title("Stock Price Predictor")
 
@@ -23,6 +24,11 @@ def load_data(ticker, custom_today):
         if data.empty:
             st.error(f"Failed to fetch data for {ticker}. The ticker might be incorrect or delisted.")
             return None
+        
+        # Flatten multi-index columns
+        if isinstance(data.columns, pd.MultiIndex):
+            data.columns = data.columns.get_level_values(0)
+        
         data.reset_index(inplace=True)
         return data
     except Exception as e:
@@ -36,6 +42,9 @@ data_load_state.text("Data Loaded!" if data is not None else "Data Loading Faile
 
 if data is not None and len(data) > 2:
     df_train = data[['Date', 'Close']].rename(columns={"Date": "ds", "Close": "y"})
+    df_train['ds'] = pd.to_datetime(df_train['ds'])
+    df_train['y'] = pd.to_numeric(df_train['y'], errors='coerce')
+    df_train.dropna(inplace=True)
     
     try:
         m = Prophet()
@@ -49,7 +58,7 @@ if data is not None and len(data) > 2:
         last_yhat_upper = forecast['yhat_upper'].iloc[-1]
 
         col1, col2, col3 = st.columns(3)
-        col1.metric("Prediction Date", last_date.date())
+        col1.metric("Prediction Date", str(last_date.date()))
         col2.metric("Lower Estimate", f"{last_yhat_lower:.2f}")
         col3.metric("Upper Estimate", f"{last_yhat_upper:.2f}")
 
